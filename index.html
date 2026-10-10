@@ -3,6 +3,8 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<meta name="theme-color" content="#f3eee6" media="(prefers-color-scheme: light)" />
+<meta name="theme-color" content="#121110" media="(prefers-color-scheme: dark)" />
 <title>Zhunming Ma 马准名 · Traveler & Photographer</title>
 <meta name="description" content="A traveling photographer's archive — 84 frames across nine countries, from the Alps to the aurora. Photographs are the mirrors; journeys are the reflections." />
 <meta property="og:title" content="Zhunming Ma 马准名 · Traveler & Photographer" />
@@ -558,6 +560,9 @@ main{position:relative;z-index:1}
 .card .shot{position:relative;overflow:hidden;border-radius:2px}
 .card .shot::after{content:'';position:absolute;inset:0;box-shadow:inset 0 0 60px rgba(0,0,0,.14);pointer-events:none}
 .card img{width:100%;height:auto;display:block;transform:scale(1.06);transition:transform 1.2s var(--ease-out);will-change:transform;filter:saturate(.96)}
+/* keyboard focus ring (modern-web-guidance: accessibility §5) — only for keyboard, never for mouse */
+:focus-visible{outline:2px solid var(--ink,currentColor);outline-offset:3px;border-radius:2px}
+.card:focus-visible .frame{outline:2px solid var(--ink,currentColor);outline-offset:4px}
 .card:hover .frame{transform:translateY(-6px);box-shadow:34px 40px 80px -30px rgba(60,42,26,.6),0 4px 10px rgba(60,42,26,.16)}
 html[data-theme="nocturne"] .card:hover .frame{box-shadow:34px 44px 90px -30px rgba(0,0,0,.9)}
 .card:hover img{transform:scale(1.12)}
@@ -842,6 +847,13 @@ html[data-theme="nocturne"] .card:hover .frame{box-shadow:34px 44px 90px -30px r
    DATA — 84 frames, self-hosted on the original Vercel domain
    ============================================================ */
 const BASE = "images/"; // photos bundled locally in /images — fully independent of the old site
+// Responsive WebP variants generated from the originals (images/w/<stem>-{800,1600,2000}.webp, 2026-10-10).
+// DIMS = intrinsic size of each original, used for width/height (no layout shift) and honest srcset widths.
+const WBASE = "images/w/";
+const DIMS={"72 Qilou zhangjiajie Hunan China.jpg":[1920,1280],"Abu Dhabi1.jpg":[960,1458],"Abu Dhabi2.jpg":[1362,2263],"Abu Dhabi3.jpg":[1920,1280],"Abu Dhabi4.jpg":[1920,1280],"aifeier1.jpg":[4608,2592],"aifeier2.jpg":[1280,1920],"aifeier3.jpg":[4488,6813],"aosai.jpg":[2276,1280],"aosai2.jpg":[1920,1280],"Bern, Switzerland.jpg":[1280,1920],"changjiangdaqiao Wuhan China.jpg":[2048,1152],"changjiangdaqiao Wuhan China2.jpg":[1280,1920],"chaoshan guangdong China1.jpg":[1280,1827],"chaoshan guangdong China2.jpg":[1280,1920],"Cifangzi Tianjin.jpg":[1280,1920],"Dublin Ireland1.jpg":[1365,2048],"Dublin Ireland2.jpg":[1920,1280],"Dublin Ireland3.jpg":[1434,1280],"Dublin Ireland4.jpg":[1280,1920],"Dublin1.jpg":[1920,1280],"Dublin2.jpg":[1920,1280],"Dublin3.jpg":[1920,1280],"Fireworks Washington, D.C1.jpg":[1920,1280],"Fireworks Washington, D.C2.jpg":[2048,1365],"Fireworks Washington, D.C3.jpg":[4096,2730],"Fireworks Washington, D.C4.jpg":[2048,1365],"Fjellheisen1 Norway.jpg":[4672,7008],"Fjellheisen2 Norway.jpg":[2048,1280],"Fjellheisen3 Norway.jpg":[1920,1280],"Forest Switzerland.jpg":[7008,4672],"Grindelwald1 Switzerland.jpg":[960,1290],"Grindelwald2 Switzerland.jpg":[4608,3072],"guqinhuai Nanjing China.jpg":[1752,1168],"Hallgrímskirkja Iceland.jpg":[1920,1280],"huanghelou Wuhan1 China.jpg":[1365,2048],"huanghelou Wuhan2 China.jpg":[1365,2048],"Huashan Shanxi China.jpg":[1280,1920],"Iceland1.jpg":[1692,1280],"Iceland2.jpg":[2276,1280],"Iceland3.jpg":[2275,1280],"Iceland4.jpg":[4563,6845],"Iceland5.jpg":[1280,2276],"Iceland6.jpg":[2066,1280],"Iceland7.jpg":[1920,1280],"Institut de France.jpg":[3043,4565],"Interlaken Switzerland.jpg":[994,1590],"jiguang1.jpg":[2268,4032],"jiguang2.jpg":[2276,1280],"jiguang3.jpg":[960,1280],"Jimingsi Nanjing China.jpg":[1707,1280],"kaixuanmen1.jpg":[1920,1280],"kaixuanmen2.jpg":[7008,4672],"Kirkjufell Iceland.jpg":[1920,1280],"Lucerne, Switzerland.jpg":[1920,1280],"lufugong.jpg":[2048,1365],"lufugong2.jpg":[1920,1280],"lufugong3.jpg":[4663,6995],"manila.jpg":[4608,2592],"Matterhorn1.jpg":[1365,2048],"Matterhorn2.jpg":[1280,1920],"mengna.jpg":[6549,4366],"Saint Sophia Cathedral, Harbin, China1.jpg":[1839,1280],"Saint Sophia Cathedral, Harbin, China2.jpg":[1920,1280],"Saint Sophia Cathedral, Harbin, China3.jpg":[1280,1920],"shenglinvshen.jpg":[1280,1920],"Shijizhong Tianjin China.jpg":[3072,4608],"shneglibaitang.jpg":[7008,4672],"shuilian.jpg":[2276,1280],"Spiez, Switzerland.jpg":[2379,1487],"Spiez, Switzerland2.jpg":[3072,4608],"Stockholm, Sweden1.jpg":[7008,4672],"Stockholm, Sweden2.jpg":[1920,1280],"the Hellnar Red House Iceland.jpg":[1280,1920],"Tianmenshan Zhangjiajie China.jpg":[2048,1152],"Tianmenshan Zhangjiajie China1.jpg":[1440,960],"Tianmenshan Zhangjiajie China2.jpg":[1280,1920],"Tianmenshan Zhangjiajie China3.jpg":[1920,1280],"Xiamen China1.jpg":[1920,1280],"zhangjiajie Hunan China1.jpg":[1440,960],"zhangjiajie Hunan China2.jpg":[2275,1280],"zhangjiajie Hunan China3.jpg":[1280,1920],"zhangjiajie Hunan China4.jpg":[1920,1280],"zhangjiajie Hunan China5.jpg":[1920,1280]};
+const dim = f => DIMS[f] || [1600,1067];
+const vw  = (f,w) => Math.min(w, dim(f)[0]);                       // honest srcset width when the original is smaller
+const variant = (f,w) => WBASE + encodeURI(f.replace(/\.[^.]+$/,"")) + "-" + w + ".webp";
 const RAW = {
 "2025":[
 ["Sheikh Zayed Mosque","ABU DHABI, UAE","Abu Dhabi1.jpg"],["White Domes","ABU DHABI, UAE","Abu Dhabi2.jpg"],
@@ -898,7 +910,7 @@ const REGION = {"2025":"Middle East · Europe","2024":"Ireland · USA · Iceland
 
 // flat model
 let PHOTOS = [];
-YEARS.forEach(y=>RAW[y].forEach(([title,loc,file])=>PHOTOS.push({year:y,title,loc,file,url:BASE+encodeURI(file)})));
+YEARS.forEach(y=>RAW[y].forEach(([title,loc,file])=>PHOTOS.push({year:y,title,loc,file,url:BASE+encodeURI(file),big:variant(file,2000)})));
 
 /* ============================================================
    i18n
@@ -987,7 +999,7 @@ function buildGallery(filter){
       card.innerHTML=`
         <div class="frame">
           <div class="idx">${num} / ${String(flat.length).padStart(2,"0")}</div>
-          <div class="shot"><img loading="lazy" src="${BASE+encodeURI(file)}" alt="${title} — ${loc}" data-flip="${file}"></div>
+          <div class="shot"><img loading="lazy" decoding="async" src="${variant(file,1600)}" srcset="${variant(file,800)} ${vw(file,800)}w, ${variant(file,1600)} ${vw(file,1600)}w" sizes="(max-width:760px) 92vw, (max-width:1100px) 44vw, 28vw" width="${dim(file)[0]}" height="${dim(file)[1]}" alt="${title} — ${loc}" data-flip="${file}" onerror="this.onerror=null;this.removeAttribute('srcset');this.src='${BASE+encodeURI(file)}'"></div>
           <figcaption class="cap"><h3>${title}</h3><p>${loc}</p></figcaption>
         </div>`;
       card.addEventListener("click",()=>openLightbox(flatIdx,card.querySelector("img")));
@@ -1017,11 +1029,13 @@ const lb=document.getElementById("lightbox"), lbImg=document.getElementById("lbI
       lbTitle=document.getElementById("lbTitle"), lbLoc=document.getElementById("lbLoc"),
       lbCount=document.getElementById("lbCount"), lbScrim=document.getElementById("lbScrim");
 let lbIndex=0, lbOpen=false;
+// WebP variant missing or broken → fall back to the original JPEG once
+lbImg.addEventListener("error",()=>{const p=CURRENT[lbIndex];if(p&&!lbImg.src.endsWith(encodeURI(p.file)))lbImg.src=p.url;});
 
 function openLightbox(i){
   lbIndex=i; lbOpen=true;
   const p=CURRENT[i];
-  lbImg.src=p.url; lbImg.alt=p.title+" — "+p.loc;
+  lbImg.src=p.big||p.url; lbImg.alt=p.title+" — "+p.loc;
   lbTitle.textContent=p.title; lbLoc.textContent=p.loc;
   lbCount.textContent=String(i+1).padStart(2,"0")+" / "+String(CURRENT.length).padStart(2,"0");
   lb.classList.add("open"); document.body.classList.add("no-scroll");
@@ -1048,7 +1062,7 @@ function nav(dir){
 function setLightbox(i, dir){
   const p=CURRENT[i];
   // content updates synchronously (robust regardless of animation timing)
-  lbImg.src=p.url; lbImg.alt=p.title+" — "+p.loc;
+  lbImg.src=p.big||p.url; lbImg.alt=p.title+" — "+p.loc;
   lbTitle.textContent=p.title; lbLoc.textContent=p.loc;
   lbCount.textContent=String(i+1).padStart(2,"0")+" / "+String(CURRENT.length).padStart(2,"0");
   // visual crossfade only
